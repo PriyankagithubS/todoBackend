@@ -1,19 +1,16 @@
 import Todo from '../models/todo.Model.js';
 
-// Get all todos
 export const getTodos = async (req, res) => {
     try {
         const todos = await Todo.find();
-        res.json(todos);
+        res.json({ todos });  // Ensure the response is in the expected format
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
 };
 
-
-// Create a new todo
 export const createTodo = async (req, res) => {
-    const { name, description, status } = req.body; // Ensure req.body is parsed correctly
+    const { name, description, status } = req.body;
     const newTodo = new Todo({
         name,
         description,
@@ -28,15 +25,12 @@ export const createTodo = async (req, res) => {
     }
 };
 
-
-// Update a todo
-
 export const updateTodo = async (req, res) => {
     try {
         const updatedTodo = await Todo.findByIdAndUpdate(
             req.params.id,
             req.body,
-            { new: true } // This option returns the updated document
+            { new: true }
         );
 
         if (!updatedTodo) {
@@ -49,7 +43,6 @@ export const updateTodo = async (req, res) => {
     }
 };
 
-// Delete a todo
 export const deleteTodo = async (req, res) => {
     try {
         await Todo.findByIdAndDelete(req.params.id);
